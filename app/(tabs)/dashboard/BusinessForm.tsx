@@ -234,40 +234,40 @@
 
 // export default BusinessForm;
 
-import React, { useState } from 'react'; // Import React and useState hook from React library
-import { View, StyleSheet, ScrollView, Alert } from 'react-native'; // Import necessary components from React Native
-import axios from 'axios'; // Import axios for making HTTP requests
-import { Button, TextInput, Provider as PaperProvider, Menu } from 'react-native-paper'; // Import components and styles from React Native Paper library
+import React, { useState } from 'react'; 
+import { View, StyleSheet, ScrollView, Alert } from 'react-native'; 
+import axios from 'axios'; 
+import { Button, TextInput, Provider as PaperProvider, Menu } from 'react-native-paper'; 
 
 const BusinessForm: React.FC<{ onAddBusiness: (business: any) => void }> = ({ onAddBusiness }) => {
-  // Define BusinessForm component as a functional component accepting a prop onAddBusiness
-  const [companyName, setCompanyName] = useState<string>(""); // Define state for companyName using useState hook
-  const [jobPosition, setJobPosition] = useState<string>(""); // Define state for jobPosition using useState hook
-  const [qualification, setQualification] = useState<string>(""); // Define state for qualification using useState hook
-  const [mobile, setMobile] = useState<string>(""); // Define state for mobile using useState hook
-  const [address, setAddress] = useState<string>(""); // Define state for address using useState hook
-  const [description, setDescription] = useState<string>(""); // Define state for description using useState hook
-  const [gender, setGender] = useState<string>(""); // Define state for gender using useState hook
-  const [experience, setExperience] = useState<string>(""); // Define state for experience using useState hook
+  
+  const [companyName, setCompanyName] = useState<string>("");
+  const [jobPosition, setJobPosition] = useState<string>(""); 
+  const [qualification, setQualification] = useState<string>(""); 
+  const [mobile, setMobile] = useState<string>(""); 
+  const [address, setAddress] = useState<string>(""); 
+  const [description, setDescription] = useState<string>("");
+  const [gender, setGender] = useState<string>(""); 
+  const [experience, setExperience] = useState<string>(""); 
 
-  const genderOptions = ['Male', 'Female', 'Other']; // Define array of gender options
-  const experienceOptions = ['1-2 years', '3-5 years', '6+ years']; // Define array of experience options
+  const genderOptions = ['Male', 'Female', 'Other']; 
+  const experienceOptions = ['1-2 years', '3-5 years', '6+ years'];
 
-  const [genderVisible, setGenderVisible] = useState<boolean>(false); // Define state for gender dropdown visibility
-  const [experienceVisible, setExperienceVisible] = useState<boolean>(false); // Define state for experience dropdown visibility
+  const [genderVisible, setGenderVisible] = useState<boolean>(false); 
+  const [experienceVisible, setExperienceVisible] = useState<boolean>(false); 
 
   const handleAddBusiness = async () => {
-    // Define function to handle adding a new business classified
+    
     if (!companyName || !jobPosition || !qualification || !mobile || !address || !description || !gender || !experience) {
-      // Check if any field is empty and show an alert if so
+     
       Alert.alert('Error', 'Please fill all the fields');
       return;
     }
 
     try {
-      // Make an axios post request to add the business classified
+      
       const response = await axios.post(
-        'https://celebratingar2024.com/mobile/Backend/Business.php', 
+        'https://celebratingar2024.com/mobile/Backend/Business.php?refresh='+Math.random(), 
         {
           companyName,
           jobPosition,
@@ -286,13 +286,13 @@ const BusinessForm: React.FC<{ onAddBusiness: (business: any) => void }> = ({ on
 
       clearForm(); 
     } catch (error) {
-      console.error(error); // Log any errors
+      console.error(error); 
       Alert.alert('Error', 'Failed to add business classified'); 
     }
   };
 
   const clearForm = () => {
-    // Define function to clear the form fields
+  
     setCompanyName("");
     setJobPosition("");
     setQualification("");

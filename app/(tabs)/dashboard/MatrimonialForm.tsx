@@ -1,16 +1,30 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import axios from 'axios';
-import { Button, Paragraph, TextInput } from 'react-native-paper';
+// import { Button, PaperProvider, Paragraph, TextInput } from 'react-native-paper';
+import { Button, TextInput, Provider as PaperProvider, Menu, Paragraph } from 'react-native-paper';
+
 import { Alert } from 'react-native';
 
 import DropDown from "react-native-paper-dropdown";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as DocumentPicker from "expo-document-picker";
 
+export interface Profile {
+  id: string;
+  father_name: string;
+  bride_or_groom_name: string;
+  rasi: string;
+  natchathiram: string;
+  created_at: string;
+  jathagam_file_path: string;
+}
 
+interface MatrimonialFormProps {
+  onAddEvent: (newEvent: Profile) => void;
+}
 
-export default function MatrimonialForm() {
+export default function MatrimonialForm(props: MatrimonialFormProps) {
   const [fatherName, setFatherName] = useState<string>('');
   const [brideOrGroomName, setBrideOrGroomName] = useState<string>('');
   const [rasi, setRasi] = useState<string>('');
@@ -21,6 +35,11 @@ export default function MatrimonialForm() {
   const [showRasiDropDown, setShowRasiDropDown] = useState<boolean>(false);
   const [showNatchathiramDropDown, setShowNatchathiramDropDown] = useState<boolean>(false);
   const [profiles, setProfiles] = useState<any[]>([]); // Adjust the type as per your profile structure
+
+
+  const [rasiVisible, setRasiVisible] = useState<boolean>(false); 
+  const [natchathiramVisible, setNatchathiramVisible] = useState<boolean>(false); 
+
 
   const rasiOptions = [
     { label: 'மேஷம் (Aries)', value: 'மேஷம் (Aries)' },
@@ -111,7 +130,7 @@ export default function MatrimonialForm() {
       name: uniqueFileName,
     } as any); // Adjust type or use an appropriate cast
 
-    axios.post('http://eamanager.com/mobile/Backend/Matrimonial.php', formData, {
+    axios.post('https://celebratingar2024.com/mobile/Backend/Matrimonial.php', formData, {
       timeout: 10000,
       headers: { 'Content-Type': 'multipart/form-data' },
     })
@@ -174,7 +193,8 @@ export default function MatrimonialForm() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <PaperProvider>
+            <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.formContainer}>
           <TextInput
@@ -189,26 +209,34 @@ export default function MatrimonialForm() {
             onChangeText={handleBrideOrGroomNameChange}
             style={styles.input}
           />
-          <DropDown
-            label="Select Rasi"
-            mode="outlined"
-            visible={showRasiDropDown}
-            showDropDown={() => setShowRasiDropDown(true)}
-            onDismiss={() => setShowRasiDropDown(false)}
-            value={rasi}
-            setValue={handleRasiChange}
-            list={rasiOptions}
-          />
-          <DropDown
-            label="Select Natchathiram"
-            mode="outlined"
-            visible={showNatchathiramDropDown}
-            showDropDown={() => setShowNatchathiramDropDown(true)}
-            onDismiss={() => setShowNatchathiramDropDown(false)}
-            value={natchathiram}
-            setValue={handleNatchathiramChange}
-            list={natchathiramOptions}
-          />
+          
+
+          <Paragraph>Selected Rasi: {rasi}</Paragraph>
+          <Menu
+            visible={rasiVisible}
+            onDismiss={() => setRasiVisible(false)}
+            anchor={<Button onPress={() => setRasiVisible(!rasiVisible)}>-- Select Rasi --</Button>}
+          >
+            {rasiOptions.map((option, index) => (
+              <Menu.Item key={index} title={option.label} onPress={() => { setRasi(option.label); setRasiVisible(false); }} />
+            ))}
+          </Menu>
+          
+
+          <Paragraph>Selected Natchathiram: {natchathiram}</Paragraph>
+          <Menu
+            visible={natchathiramVisible}
+            onDismiss={() => setNatchathiramVisible(false)}
+            anchor={<Button onPress={() => setNatchathiramVisible(!natchathiramVisible)}>-- Select Natchathiram --</Button>}
+          >
+            {natchathiramOptions.map((option, index) => (
+              <Menu.Item key={index} title={option.label} onPress={() => { setNatchathiram(option.label); setNatchathiramVisible(false); }} />
+            ))}
+          </Menu>
+          
+
+
+          
           <Button onPress={pickDocument} mode="outlined" style={styles.button}>
             Select Jathagam File
           </Button>
@@ -219,6 +247,7 @@ export default function MatrimonialForm() {
         </View>
       </ScrollView>
     </SafeAreaView>
+    </PaperProvider>
   );
 }
 
@@ -242,5 +271,4 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 });
-
 

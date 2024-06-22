@@ -343,7 +343,7 @@ const EventForm: React.FC<{ onAddEvent: (event: any) => void }> = ({ onAddEvent 
             onChangeText={setEventsToAdd}
             value={eventsToAdd}
             multiline
-            numberOfLines={5}
+            numberOfLines={6}
             mode="outlined"
           />
           <Button

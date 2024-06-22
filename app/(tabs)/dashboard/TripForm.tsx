@@ -151,6 +151,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import axios from 'axios';
+import { Alert } from 'react-native';
 import { Button, TextInput, useTheme, Provider as PaperProvider } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 
@@ -200,7 +201,7 @@ const TripForm: React.FC<TripFormProps> = ({ onAddTrip }) => {
 
       console.log(response.data);
       if (response.data.includes('New record created successfully')) {
-        alert('Trip added successfully');
+        Alert.alert('Trip added successfully'); 
 
         const newTrip: TripData = {
           id: response.data.id,
